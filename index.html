@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="Py.png" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python para Análise de Dados</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            font-size: 3.5em;
+            color: white;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.3em;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 20px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .nav-tab {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .nav-tab:hover, .nav-tab.active {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .tab-content {
+            display: none; /* Hidden by default, managed by JS */
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        /* Styling for the new 'all-libraries-container' */
+        #all-libraries-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: block; /* Always visible on initial load */
+            animation: fadeIn 0.5s ease-in;
+        }
+
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .category-header h2 {
+            font-size: 2em;
+            color: #333;
+        }
+
+        .library-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .library-card {
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            /* Add data-category to each card for filtering */
+        }
+
+        .library-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .library-name {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .library-description {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .library-example {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        .library-link {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .library-link:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+
+        .tips-section {
+            background: linear-gradient(135deg, #fff7e6 0%, #ffe4b3 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .tips-section h3 {
+            color: #d69e2e;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .tip-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #d69e2e;
+        }
+
+        .search-container {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 25px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.2);
+        }
+
+        .footer {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .social-links a, .useful-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover, .useful-links a:hover {
+            color: #a7d9f7;
+        }
+
+        .social-links {
+            font-size: 1.5em;
+        }
+
+        .useful-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5em;
+            }
+            
+            .library-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .useful-links {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐍 Python para Análise de Dados</h1>
+            <p>Seu guia completo para dominar análise de dados com Python</p>
+            <p style="font-size: 1.1em; opacity: 0.8;">Explore as principais bibliotecas, aprenda dicas valiosas e acelere seus projetos de dados</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('all')">✨ Todas as Bibliotecas</button>
+            <button class="nav-tab" onclick="showTab('manipulacao')">📊 Manipulação de Dados</button>
+            <button class="nav-tab" onclick="showTab('visualizacao')">📈 Visualização</button>
+            <button class="nav-tab" onclick="showTab('ml')">🤖 Machine Learning</button>
+            <button class="nav-tab" onclick="showTab('etl')">🔄 ETL & Dados</button>
+            <button class="nav-tab" onclick="showTab('nlp')">🧠 NLP</button>
+            <button class="nav-tab" onclick="showTab('web')">🌐 Web & APIs</button>
+            <button class="nav-tab" onclick="showTab('dicas')">💡 Dicas</button>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="🔎 Buscar biblioteca..." onkeyup="filterLibraries(this.value)">
+        </div>
+
+        <div id="all-libraries-container">
+            <div class="category-header">
+                <span style="font-size: 2em;">✨</span>
+                <h2>Todas as Bibliotecas</h2>
+            </div>
+            
+            <div class="library-grid">
+                <div class="library-card" data-name="pandas" data-category="manipulacao">
+                    <div class="library-name">Pandas</div>
+                    <div class="library-description">Principal biblioteca para manipulação de dados em tabelas (DataFrames). Essencial para limpeza, transformação e análise exploratória de dados.</div>
+                    <div class="library-example">import pandas as pd
+df = pd.read_csv('dados.csv')
+print(df.head())</div>
+                    <a href="https://pandas.pydata.org/docs/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="numpy" data-category="manipulacao">
+                    <div class="library-name">NumPy</div>
+                    <div class="library-description">Base para computação científica em Python. Oferece arrays multidimensionais e funções matemáticas de alto desempenho.</div>
+                    <div class="library-example">import numpy as np
+arr = np.array([1, 2, 3, 4, 5])
+print(np.mean(arr))</div>
+                    <a href="https://numpy.org/doc/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="polars" data-category="manipulacao">
+                    <div class="library-name">Polars</div>
+                    <div class="library-description">Alternativa moderna ao Pandas, extremamente rápida para grandes volumes de dados. Utiliza Rust internamente.</div>
+                    <div class="library-example">import polars as pl
+df = pl.read_csv('dados.csv')
+print(df.head())</div>
+                    <a href="https://pola-rs.github.io/polars-book/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="scipy" data-category="manipulacao">
+                    <div class="library-name">SciPy</div>
+                    <div class="library-description">Biblioteca científica com algoritmos e funções matemáticas avançadas para otimização, álgebra linear e estatística.</div>
+                    <div class="library-example">from scipy import stats
+data = [1, 2, 3, 4, 5]
+print(stats.describe(data))</div>
+                    <a href="https://scipy.org/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="datetime" data-category="manipulacao">
+                    <div class="library-name">DateTime</div>
+                    <div class="library-description">Biblioteca nativa do Python para manipulação de datas e horários. Essencial para análise temporal.</div>
+                    <div class="library-example">from datetime import datetime
+now = datetime.now()
+print(now.strftime('%Y-%m-%d'))</div>
+                    <a href="https://docs.python.org/3/library/datetime.html" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="missingno" data-category="manipulacao">
+                    <div class="library-name">Missingno</div>
+                    <div class="library-description">Visualização e análise de dados faltantes em datasets. Oferece gráficos intuitivos para entender padrões de dados ausentes.</div>
+                    <div class="library-example">import missingno as msno
+msno.matrix(df)
+msno.bar(df)</div>
+                    <a href="https://github.com/ResidentMario/missingno" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="matplotlib" data-category="visualizacao">
+                    <div class="library-name">Matplotlib</div>
+                    <div class="library-description">Biblioteca fundamental para criação de gráficos estáticos, animados e interativos em Python.</div>
+                    <div class="library-example">import matplotlib.pyplot as plt
+plt.plot([1, 2, 3, 4], [1, 4, 2, 3])
+plt.show()</div>
+                    <a href="https://matplotlib.org/stable/contents.html" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="seaborn" data-category="visualizacao">
+                    <div class="library-name">Seaborn</div>
+                    <div class="library-description">Interface de alto nível para Matplotlib, especializada em visualizações estatísticas atrativas e informativas.</div>
+                    <div class="library-example">import seaborn as sns
+sns.histplot(data=df, x='idade')
+plt.show()</div>
+                    <a href="https://seaborn.pydata.org/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="plotly" data-category="visualizacao">
+                    <div class="library-name">Plotly</div>
+                    <div class="library-description">Criação de gráficos interativos e dashboards. Ideal para visualizações web e apresentações dinâmicas.</div>
+                    <div class="library-example">import plotly.express as px
+fig = px.bar(df, x='ano', y='vendas')
+fig.show()</div>
+                    <a href="https://plotly.com/python/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="sweetviz" data-category="visualizacao">
+                    <div class="library-name">SweetViz</div>
+                    <div class="library-description">Gera relatórios de análise exploratória automática com visualizações comparativas entre datasets.</div>
+                    <div class="library-example">import sweetviz as sv
+report = sv.analyze(df)
+report.show_html()</div>
+                    <a href="https://github.com/fbdesignpro/sweetviz" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="dtale" data-category="visualizacao">
+                    <div class="library-name">D-Tale</div>
+                    <div class="library-description">Interface web interativa para visualização e análise de DataFrames do Pandas. Permite exploração visual intuitiva.</div>
+                    <div class="library-example">import dtale
+d = dtale.show(df)
+d.open_browser()</div>
+                    <a href="https://github.com/man-group/dtale" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="scikit-learn" data-category="ml">
+                    <div class="library-name">Scikit-learn</div>
+                    <div class="library-description">Principal biblioteca para machine learning em Python. Oferece algoritmos de classificação, regressão, clustering e mais.</div>
+                    <div class="library-example">from sklearn.linear_model import LinearRegression
+model = LinearRegression()
+model.fit(X_train, y_train)</div>
+                    <a href="https://scikit-learn.org/stable/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="statsmodels" data-category="ml">
+                    <div class="library-name">Statsmodels</div>
+                    <div class="library-description">Biblioteca para modelagem estatística, testes de hipóteses e análise econométrica.</div>
+                    <div class="library-example">import statsmodels.api as sm
+model = sm.OLS(y, X).fit()
+print(model.summary())</div>
+                    <a href="https://www.statsmodels.org/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="xgboost" data-category="ml">
+                    <div class="library-name">XGBoost</div>
+                    <div class="library-description">Implementação otimizada de gradient boosting, extremamente eficaz em competições de machine learning.</div>
+                    <div class="library-example">
+                        <pre><code>
+import xgboost as xgb
+model = xgb.XGBRegressor()
+model.fit(X_train, y_train)
+                        </code></pre>
+                    </div>
+                    <a href="https://xgboost.readthedocs.io/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="lightgbm" data-category="ml">
+                    <div class="library-name">LightGBM</div>
+                    <div class="library-description">Framework de gradient boosting rápido e eficiente em memória, ideal para grandes datasets.</div>
+                    <div class="library-example">
+                        <pre><code>
+import lightgbm as lgb
+model = lgb.LGBMRegressor()
+model.fit(X_train, y_train)
+                        </code></pre>
+                    </div>
+                    <a href="https://lightgbm.readthedocs.io/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="tensorflow" data-category="ml">
+                    <div class="library-name">TensorFlow</div>
+                    <div class="library-description">Poderosa biblioteca de código aberto desenvolvida pelo Google para **Deep Learning**, redes neurais e computação numérica em larga escala.</div>
+                    <div class="library-example">
+                        <pre><code>
+import tensorflow as tf
+from tensorflow import keras
+model = keras.Sequential([keras.layers.Dense(units=1, input_shape=[1])])
+model.compile(optimizer='sgd', loss='mean_squared_error')
+                        </code></pre>
+                    </div>
+                    <a href="https://www.tensorflow.org/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="pytorch" data-category="ml">
+                    <div class="library-name">PyTorch</div>
+                    <div class="library-description">Framework de código aberto para **Deep Learning** desenvolvido pelo Facebook, conhecido por sua flexibilidade e "Pythonic approach".</div>
+                    <div class="library-example">
+                        <pre><code>
+import torch
+import torch.nn as nn
+model = nn.Linear(10, 1)
+loss_fn = nn.MSELoss()
+                        </code></pre>
+                    </div>
+                    <a href="https://pytorch.org/docs/stable/index.html" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="keras" data-category="ml">
+                    <div class="library-name">Keras</div>
+                    <div class="library-description">API de alto nível para construção e treinamento de modelos de Deep Learning. Funciona como interface para TensorFlow, PyTorch ou JAX.</div>
+                    <div class="library-example">
+                        <pre><code>
+from tensorflow import keras
+model = keras.Sequential([keras.layers.Dense(units=64, activation='relu', input_shape=(X_train.shape[1],)), keras.layers.Dense(units=1)])
+model.compile(optimizer='adam', loss='mse')
+                        </code></pre>
+                    </div>
+                    <a href="https://keras.io/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="category_encoders" data-category="ml">
+                    <div class="library-name">Category Encoders</div>
+                    <div class="library-description">Biblioteca especializada em codificação de variáveis categóricas para machine learning.</div>
+                    <div class="library-example">import category_encoders as ce
+encoder = ce.OneHotEncoder()
+X_encoded = encoder.fit_transform(X)</div>
+                    <a href="https://contrib.scikit-learn.org/category_encoders/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="mlxtend" data-category="ml">
+                    <div class="library-name">MLxtend</div>
+                    <div class="library-description">Extensões úteis para machine learning, incluindo algoritmos de associação, seleção de features e visualizações.</div>
+                    <div class="library-example">from mlxtend.frequent_patterns import apriori
+frequent_itemsets = apriori(df, min_support=0.1)</div>
+                    <a href="https://rasbt.github.io/mlxtend/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="svm" data-category="ml">
+                    <div class="library-name">Scikit-learn (SVM)</div>
+                    <div class="library-description">Implementação de Support Vector Machines (SVM) para classificação, regressão e detecção de outliers. Poderoso para dados com muitas dimensões e casos onde a margem de separação é importante.</div>
+                    <div class="library-example">
+                        <pre><code>
+from sklearn import svm
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import make_classification
+
+X, y = make_classification(n_samples=100, n_features=4, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
+
+model_svm = svm.SVC(kernel='linear') # Support Vector Classifier
+model_svm.fit(X_train, y_train)
+print(model_svm.score(X_test, y_test))
+                        </code></pre>
+                    </div>
+                    <a href="https://scikit-learn.org/stable/modules/svm.html" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="decision-tree" data-category="ml">
+                    <div class="library-name">Scikit-learn (Árvore de Decisão)</div>
+                    <div class="library-description">Um algoritmo de aprendizado supervisionado para tarefas de **classificação e regressão**, que usa uma estrutura de árvore de decisões para modelar dados. Intuitivo e fácil de interpretar.</div>
+                    <div class="library-example">
+                        <pre><code>
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import load_iris
+
+iris = load_iris()
+X, y = iris.data, iris.target
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
+
+model_dt = DecisionTreeClassifier(random_state=42)
+model_dt.fit(X_train, y_train)
+print(model_dt.score(X_test, y_test))
+                        </code></pre>
+                    </div>
+                    <a href="https://scikit-learn.org/stable/modules/tree.html" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="random-forest" data-category="ml">
+                    <div class="library-name">Scikit-learn (Random Forest)</div>
+                    <div class="library-description">Um método de aprendizado em conjunto para **classificação e regressão**, que constrói múltiplas árvores de decisão e combina suas previsões para melhorar a acurácia e controlar o overfitting.</div>
+                    <div class="library-example">
+                        <pre><code>
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import load_iris
+
+iris = load_iris()
+X, y = iris.data, iris.target
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
+
+model_rf = RandomForestClassifier(n_estimators=100, random_state=42)
+model_rf.fit(X_train, y_train)
+print(model_rf.score(X_test, y_test))</code></pre>
+                    </div>
+                    <a href="https://scikit-learn.org/stable/modules/ensemble.html#random-forests" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="linear-regression" data-category="ml">
+                    <div class="library-name">Scikit-learn (Regressão Linear)</div>
+                    <div class="library-description">Um dos modelos mais básicos e amplamente utilizados para **regressão**, que modela a relação linear entre uma variável dependente e uma ou mais variáveis independentes.</div>
+                    <div class="library-example">
+                        <pre><code>
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import make_regression
+
+X, y = make_regression(n_samples=100, n_features=1, noise=0.5, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
+
+model_lr = LinearRegression()
+model_lr.fit(X_train, y_train)
+print(model_lr.score(X_test, y_test))</code></pre>
+                    </div>
+                    <a href="https://scikit-learn.org/stable/modules/linear_model.html#ordinary-least-squares" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="clustering-kmeans" data-category="ml">
+                    <div class="library-name">Scikit-learn (Clusterização - K-Means)</div>
+                    <div class="library-description">Algoritmos de **aprendizado não supervisionado** para agrupar dados em clusters com base em sua similaridade. O K-Means é um dos algoritmos de clusterização mais populares.</div>
+                    <div class="library-example">
+                        <pre><code>
+from sklearn.cluster import KMeans
+from sklearn.datasets import make_blobs
+import matplotlib.pyplot as plt
+
+X, y = make_blobs(n_samples=300, centers=4, random_state=42)
+
+kmeans = KMeans(n_clusters=4, random_state=42, n_init='auto')
+kmeans.fit(X)
+labels = kmeans.labels_
+# plt.scatter(X[:, 0], X[:, 1], c=labels, cmap='viridis')
+# plt.show()</code></pre>
+                    </div>
+                    <a href="https://scikit-learn.org/stable/modules/clustering.html#k-means" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="classification" data-category="ml">
+                    <div class="library-name">Scikit-learn (Classificação)</div>
+                    <div class="library-description">Variedade de algoritmos para problemas de **classificação**, onde o objetivo é prever uma categoria ou classe discreta. Inclui regressão logística, SVM, árvores de decisão, Naive Bayes, e muitos outros.</div>
+                    <div class="library-example">
+                        <pre><code class="language-python">from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import load_breast_cancer
+
+data = load_breast_cancer()
+X, y = data.data, data.target
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
+
+model_logreg = LogisticRegression(max_iter=1000, random_state=42)
+model_logreg.fit(X_train, y_train)
+print(f"Logistic Regression Accuracy: {model_logreg.score(X_test, y_test)}")</code></pre>
+                    </div>
+                    <a href="https://scikit-learn.org/stable/supervised_learning.html#classification" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="efficient_apriori" data-category="ml">
+                    <div class="library-name">Efficient Apriori</div>
+                    <div class="library-description">Implementação eficiente do algoritmo Apriori para mineração de regras de associação.</div>
+                    <div class="library-example">from efficient_apriori import apriori
+itemsets, rules = apriori(transactions, min_support=0.1)</div>
+                    <a href="https://github.com/tommyod/Efficient-Apriori" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="sqlalchemy" data-category="etl">
+                    <div class="library-name">SQLAlchemy</div>
+                    <div class="library-description">ORM e toolkit SQL mais popular do Python. Facilita conexões e operações com bancos de dados relacionais.</div>
+                    <div class="library-example">from sqlalchemy import create_engine
+engine = create_engine('postgresql://user:pass@localhost/db')
+df.to_sql('tabela', engine)</div>
+                    <a href="https://docs.sqlalchemy.org/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="psycopg2" data-category="etl">
+                    <div class="library-name">Psycopg2</div>
+                    <div class="library-description">Adaptador PostgreSQL mais popular para Python. Permite conexão direta e eficiente com bancos PostgreSQL.</div>
+                    <div class="library-example">
+                        <pre><code class="language-python">
+import psycopg2
+conn = psycopg2.connect("host=localhost dbname=test")
+cur = conn.cursor()
+                        </code></pre>
+                    </div>
+                    <a href="https://www.psycopg.org/docs/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="pyodbc" data-category="etl">
+                    <div class="library-name">PyODBC</div>
+                    <div class="library-description">Interface Python para ODBC, permitindo conexão com SQL Server, MySQL, PostgreSQL e outros bancos.</div>
+                    <div class="library-example">import pyodbc
+conn = pyodbc.connect('DRIVER={SQL Server};SERVER=localhost;DATABASE=test')
+cursor = conn.cursor()</div>
+                    <a href="https://github.com/mkleehammer/pyodbc/wiki" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="openpyxl" data-category="etl">
+                    <div class="library-name">OpenPyXL</div>
+                    <div class="library-description">Biblioteca para leitura e escrita de arquivos Excel (.xlsx). Suporta formatação avançada e fórmulas.</div>
+                    <div class="library-example">import openpyxl
+wb = openpyxl.load_workbook('arquivo.xlsx')
+ws = wb.active</div>
+                    <a href="https://openpyxl.readthedocs.io/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="dask" data-category="etl">
+                    <div class="library-name">Dask</div>
+                    <div class="library-description">Computação paralela para análise de dados que não cabem na memória. Interface similar ao Pandas.</div>
+                    <div class="library-example">import dask.dataframe as dd
+df = dd.read_csv('arquivo_grande.csv')
+resultado = df.groupby('coluna').sum().compute()</div>
+                    <a href="https://docs.dask.org/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="chardet" data-category="etl">
+                    <div class="library-name">Chardet</div>
+                    <div class="library-description">Detecção automática de codificação de caracteres em arquivos de texto. Útil para dados internacionais.</div>
+                    <div class="library-example">import chardet
+with open('arquivo.txt', 'rb') as f:
+    resultado = chardet.detect(f.read())</div>
+                    <a href="https://github.com/chardet/chardet" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="ipython-sql" data-category="etl">
+                    <div class="library-name">IPython-SQL</div>
+                    <div class="library-description">Extensão mágica para executar queries SQL diretamente em notebooks Jupyter de forma intuitiva.</div>
+                    <div class="library-example">%load_ext sql
+%sql postgresql://user:pass@localhost/db
+%%sql
+SELECT * FROM tabela LIMIT 10</div>
+                    <a href="https://github.com/catherinedevlin/ipython-sql" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="pandas_datareader" data-category="etl">
+                    <div class="library-name">Pandas DataReader</div>
+                    <div class="library-description">Importação de dados financeiros e econômicos de fontes como Yahoo Finance, FRED, World Bank.</div>
+                    <div class="library-example">import pandas_datareader as pdr
+data = pdr.get_data_yahoo('AAPL', start='2020-01-01')</div>
+                    <a href="https://pandas-datareader.readthedocs.io/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="nltk" data-category="nlp">
+                    <div class="library-name">NLTK</div>
+                    <div class="library-description">Kit de ferramentas abrangente para processamento de linguagem natural, com corpus e algoritmos clássicos.</div>
+                    <div class="library-example">import nltk
+tokens = nltk.word_tokenize("Olá mundo!")
+tagged = nltk.pos_tag(tokens)</div>
+                    <a href="https://www.nltk.org/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="spacy" data-category="nlp">
+                    <div class="library-name">spaCy</div>
+                    <div class="library-description">Biblioteca NLP industrial com foco em performance. Oferece modelos pré-treinados e pipelines eficientes.</div>
+                    <div class="library-example">import spacy
+nlp = spacy.load("pt_core_news_sm")
+doc = nlp("Olá mundo!")</div>
+                    <a href="https://spacy.io/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="textblob" data-category="nlp">
+                    <div class="library-name">TextBlob</div>
+                    <div class="library-description">API simples para tarefas comuns de NLP como análise de sentimento, tradução e correção ortográfica.</div>
+                    <div class="library-example">from textblob import TextBlob
+blob = TextBlob("Bom dia!")
+print(blob.sentiment)</div>
+                    <a href="https://textblob.readthedocs.io/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="requests" data-category="web">
+                    <div class="library-name">Requests</div>
+                    <div class="library-description">Biblioteca elegante e simples para requisições HTTP. Essencial para consumir APIs e fazer web scraping.</div>
+                    <div class="library-example">import requests
+response = requests.get('https://api.exemplo.com/dados')
+data = response.json()</div>
+                    <a href="https://docs.python-requests.org/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="openai" data-category="web">
+                    <div class="library-name">OpenAI</div>
+                    <div class="library-description">Cliente oficial para a API da OpenAI, permitindo integração com GPT, DALL-E e outros modelos de IA.</div>
+                    <div class="library-example">import openai
+response = openai.Completion.create(
+    model="gpt-3.5-turbo",
+    messages=[{"role": "user", "content": "Olá!"}]
+)</div>
+                    <a href="https://platform.openai.com/docs/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="google-generativeai" data-category="web">
+                    <div class="library-name">Google GenerativeAI</div>
+                    <div class="library-description">Cliente Python para a API do Google Gemini, permitindo integração com modelos de IA generativa do Google.</div>
+                    <div class="library-example">import google.generativeai as genai
+genai.configure(api_key="sua_api_key")
+model = genai.GenerativeModel('gemini-pro')
+response = model.generate_content("Olá!")</div>
+                    <a href="https://ai.google.dev/docs" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="watermark" data-category="web">
+                    <div class="library-name">Watermark</div>
+                    <div class="library-description">Extensão IPython para mostrar informações do sistema, versões de bibliotecas e metadados dos notebooks.</div>
+                    <div class="library-example">%load_ext watermark
+%watermark -v -m -p pandas,numpy -g</div>
+                    <a href="https://github.com/rasbt/watermark" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="dicas" class="tab-content">
+            <div class="category-header">
+                <span style="font-size: 2em;">💡</span>
+                <h2>Dicas Essenciais para Análise de Dados</h2>
+            </div>
+
+            <div class="tips-section">
+                <h3>🚀 Otimização de Performance</h3>
+                <div class="tip-item">
+                    <strong>Use Pandas de forma eficiente:</strong> Prefira operações vetorizadas ao invés de loops. Use <code>df.apply()</code> ao invés de <code>for</code> loops quando possível.
+                </div>
+                <div class="tip-item">
+                    <strong>Gerencie memória:</strong> Use <code>df.dtypes</code> para verificar tipos de dados e <code>pd.to_numeric()</code> com <code>downcast</code> para otimizar o uso de memória.
+                </div>
+                <div class="tip-item">
+                    <strong>Para grandes datasets:</strong> Considere usar Dask ou Polars ao invés do Pandas tradicional para melhor performance.
+                </div>
+            </div>
+
+            <div class="tips-section">
+                <h3>🧹 Limpeza e Preparação de Dados</h3>
+                <div class="tip-item">
+                    <strong>Sempre explore primeiro:</strong> Use <code>df.info()</code>, <code>df.describe()</code> e <code>df.head()</code> para entender seus dados antes de começar a análise.
+                </div>
+                <div class="tip-item">
+                    <strong>Trate dados faltantes:</strong> Use <code>missingno</code> para visualizar padrões de dados ausentes e escolha a estratégia apropriada (remoção, imputação, etc.).
+                </div>
+                <div class="tip-item">
+                    <strong>Validação de dados:</strong> Sempre valide a qualidade dos seus dados após transformações usando <code>assert</code> statements.
+                </div>
+            </div>
+
+            <div class="tips-section">
+                <h3>📊 Visualização Eficaz</h3>
+                <div class="tip-item">
+                    <strong>Escolha o gráfico certo:</strong> Barras para categorias, linhas para séries temporais, scatter para correlações, histogramas para distribuições.
+                </div>
+                <div class="tip-item">
+                    <strong>Use cores com propósito:</strong> Aplique cores para destacar insights, não apenas por estética. Considere daltonismo na escolha de paletas.
+                </div>
+                <div class="tip-item">
+                    <strong>Interatividade:</strong> Use Plotly para dashboards e apresentações, mas Matplotlib/Seaborn para análises exploratórias rápidas.
+                </div>
+            </div>
+
+            <div class="tips-section">
+                <h3>🤖 Machine Learning</h3>
+                <div class="tip-item">
+                    <strong>Validação cruzada:</strong> Sempre use <code>cross_val_score</code> ou <code>KFold</code> para avaliar modelos de forma robusta.
+                </div>
+                <div class="tip-item">
+                    <strong>Feature engineering:</strong> Invista tempo criando features relevantes. Use <code>category_encoders</code> para variáveis categóricas.
+                </div>
+                <div class="tip-item">
+                    <strong>Baseline simples:</strong> Comece sempre com modelos simples (regressão linear, árvore de decisão) antes de partir para algoritmos complexos.
+                </div>
+            </div>
+
+            <div class="tips-section">
+                <h3>🔧 Melhores Práticas</h3>
+                <div class="tip-item">
+                    <strong>Ambiente virtual:</strong> Sempre use <code>venv</code> ou <code>conda</code> para isolar dependências dos seus projetos.
+                </div>
+                <div class="tip-item">
+                    <strong>Documentação:</strong> Use docstrings nas suas funções e mantenha um README.md atualizado em seus projetos.
+                </div>
+                <div class="tip-item">
+                    <strong>Controle de versão:</strong> Use Git para versionar código e DVC (Data Version Control) para versionar datasets.
+                </div>
+                <div class="tip-item">
+                    <strong>Notebooks organizados:</strong> Use células markdown para explicar seu raciocínio e mantenha código limpo e comentado.
+                </div>
+            </div>
+
+            <div class="tips-section">
+                <h3>📚 Recursos de Aprendizado</h3>
+                <div class="tip-item">
+                    <strong>Documentação oficial:</strong> Sempre consulte a documentação oficial das bibliotecas - são os recursos mais confiáveis e atualizados.
+                </div>
+                <div class="tip-item">
+                    <strong>Kaggle Learn:</strong> Cursos gratuitos e práticos sobre Data Science, com certificados e exercícios hands-on.
+                </div>
+                <div class="tip-item">
+                    <strong>Stack Overflow:</strong> Para dúvidas específicas, mas sempre entenda a solução ao invés de apenas copiar e colar.
+                </div>
+                <div class="tip-item">
+                    <strong>GitHub:</strong> Explore repositórios de projetos de análise de dados para aprender boas práticas e técnicas avançadas.
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-content">
+                <p>📊 Python para Análise de Dados - Seu guia completo para dominar a ciência de dados e impulsionar seus projetos.</p>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/alex-souza/" target="_blank" aria-label="LinkedIn">🔗 LinkedIn</a>
+                    <a href="https://instagram.com/alexsouzamsc" target="_blank" aria-label="Instagram">📸 Instagram</a>
+                    <a href="https://www.tiktok.com/@alexsouzamsc" target="_blank" aria-label="TikTok">🎵 TikTok</a>
+                    <a href="https://www.youtube.com/@alexsouzamsc" target="_blank" aria-label="Youtube">▶️ Youtube</a>
+                </div>
+                <div class="useful-links">
+                    <a href="https://www.python.org/" target="_blank">Python Oficial</a>
+                    <a href="https://www.anaconda.com/" target="_blank">Anaconda Python</a>
+                    <a href="https://jupyter.org/" target="_blank">Jupyter Notebook</a>
+                    <a href="https://github.com/aasouzaconsult/DC_Data-Analytics/tree/main/Python" target="_blank">Dicas iniciais (Alex Souza)</a>
+                    <a href="https://www.w3schools.com/python/" target="_blank">W3Schools Python</a>
+                    <a href="https://www.amazon.com.br/Python-Para-An%C3%A1lise-Dados-Tratamento/dp/8575226479" target="_blank">Livro</a>
+                </div>
+                <p style="font-size: 0.9em; opacity: 0.8; margin-top: 10px;">
+                    💡 Dica: Marque esta página nos favoritos e volte sempre que precisar consultar uma biblioteca!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            const allTabContents = document.querySelectorAll('.tab-content');
+            allTabContents.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active class from all nav tabs
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show the appropriate tab
+            if (tabName === 'dicas') {
+                document.getElementById('dicas').classList.add('active');
+                document.getElementById('all-libraries-container').style.display = 'none'; // Hide all libraries container
+            } else {
+                document.getElementById('all-libraries-container').classList.add('active'); // Keep all-libraries-container active for library tabs
+                document.getElementById('dicas').classList.remove('active'); // Ensure dicas is hidden
+            }
+            
+            // Add active class to clicked nav tab
+            event.target.classList.add('active');
+
+            // Handle visibility of library cards within the #all-libraries-container
+            const cards = document.querySelectorAll('#all-libraries-container .library-card');
+            cards.forEach(card => {
+                if (tabName === 'all' || card.getAttribute('data-category') === tabName) {
+                    card.style.display = 'block';
+                    card.style.animation = 'fadeIn 0.5s ease-in';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // If a category tab is clicked, make sure its header is visible within the #all-libraries-container
+            if (tabName !== 'all' && tabName !== 'dicas') {
+                const categoryHeader = document.querySelector('#all-libraries-container .category-header');
+                if (categoryHeader) {
+                    categoryHeader.style.display = 'none'; // Hide the "Todas as Bibliotecas" header
+                }
+            } else if (tabName === 'all') {
+                const categoryHeader = document.querySelector('#all-libraries-container .category-header');
+                if (categoryHeader) {
+                    categoryHeader.style.display = 'flex'; // Show the "Todas as Bibliotecas" header
+                }
+            }
+        }
+
+        function filterLibraries(searchTerm) {
+            const cards = document.querySelectorAll('#all-libraries-container .library-card');
+            const lowerSearchTerm = searchTerm.toLowerCase();
+            
+            // Ensure "Todas as Bibliotecas" tab is active when searching
+            const allLibrariesTabButton = document.querySelector('.nav-tabs button[onclick="showTab(\'all\')"]');
+            const currentActiveNavTab = document.querySelector('.nav-tab.active');
+
+            if (currentActiveNavTab && currentActiveNavTab !== allLibrariesTabButton && searchTerm !== '') {
+                currentActiveNavTab.classList.remove('active');
+                allLibrariesTabButton.classList.add('active');
+                document.getElementById('dicas').classList.remove('active');
+                document.getElementById('all-libraries-container').classList.add('active');
+                document.querySelector('#all-libraries-container .category-header').style.display = 'flex'; // Show "Todas as Bibliotecas" header during search
+            } else if (searchTerm === '' && currentActiveNavTab === allLibrariesTabButton) {
+                // If search is cleared and "All Libraries" is active, ensure all cards are visible
+                cards.forEach(card => {
+                    card.style.display = 'block';
+                });
+                document.querySelector('#all-libraries-container .category-header').style.display = 'flex';
+                return; // Exit early as no filtering is needed
+            }
+
+
+            cards.forEach(card => {
+                const name = card.querySelector('.library-name').textContent.toLowerCase();
+                const description = card.querySelector('.library-description').textContent.toLowerCase();
+                const dataName = card.getAttribute('data-name') || '';
+                
+                if (name.includes(lowerSearchTerm) || 
+                    description.includes(lowerSearchTerm) || 
+                    dataName.includes(lowerSearchTerm)) {
+                    card.style.display = 'block';
+                    card.style.animation = 'fadeIn 0.3s ease-in';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Add some interactive effects
+        document.querySelectorAll('.library-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.02)';
+                this.style.boxShadow = '0 20px 40px rgba(0,0,0,0.15)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+                this.style.boxShadow = '0 5px 15px rgba(0,0,0,0.05)';
+            });
+        });
+
+        // Add smooth scrolling to top when changing tabs
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }, 100);
+            });
+        });
+
+        // Add search focus shortcut (Ctrl+K or Cmd+K)
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                document.querySelector('.search-input').focus();
+            }
+        });
+
+        // Add loading animation on page load and set initial tab
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease-in';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+            
+            // Ensure "Todas as Bibliotecas" tab is active and visible on load
+            document.querySelector('.nav-tabs button:first-child').classList.add('active');
+            document.getElementById('all-libraries-container').classList.add('active'); // Make sure the container is active
+            document.getElementById('dicas').classList.remove('active'); // Ensure dicas is not active on load
+        });
+    </script>
+</body>
+</html>
