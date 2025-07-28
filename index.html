@@ -815,73 +815,91 @@ SELECT * FROM tabela LIMIT 10</div>
                 <div class="library-card" data-name="pandas_datareader" data-category="etl">
                     <div class="library-name">Pandas DataReader</div>
                     <div class="library-description">Importação de dados financeiros e econômicos de fontes como Yahoo Finance, FRED, World Bank.</div>
-                    <div class="library-example">import pandas_datareader as pdr
-data = pdr.get_data_yahoo('AAPL', start='2020-01-01')</div>
+                    <div class="library-example"><pre><code class="language-python">
+import pandas_datareader as pdr
+data = pdr.get_data_yahoo('AAPL', start='2020-01-01')</code></pre>
+                    </div>
                     <a href="https://pandas-datareader.readthedocs.io/" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
                 <div class="library-card" data-name="nltk" data-category="nlp">
                     <div class="library-name">NLTK</div>
                     <div class="library-description">Kit de ferramentas abrangente para processamento de linguagem natural, com corpus e algoritmos clássicos.</div>
-                    <div class="library-example">import nltk
+                    <div class="library-example"><pre><code class="language-python">
+import nltk
 tokens = nltk.word_tokenize("Olá mundo!")
-tagged = nltk.pos_tag(tokens)</div>
+tagged = nltk.pos_tag(tokens)</code></pre>
+                    </div>
                     <a href="https://www.nltk.org/" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
                 <div class="library-card" data-name="spacy" data-category="nlp">
                     <div class="library-name">spaCy</div>
                     <div class="library-description">Biblioteca NLP industrial com foco em performance. Oferece modelos pré-treinados e pipelines eficientes.</div>
-                    <div class="library-example">import spacy
+                    <div class="library-example"><pre><code class="language-python">
+import spacy
 nlp = spacy.load("pt_core_news_sm")
-doc = nlp("Olá mundo!")</div>
+doc = nlp("Olá mundo!")</code></pre>
+                    </div>
                     <a href="https://spacy.io/" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
                 <div class="library-card" data-name="textblob" data-category="nlp">
                     <div class="library-name">TextBlob</div>
                     <div class="library-description">API simples para tarefas comuns de NLP como análise de sentimento, tradução e correção ortográfica.</div>
-                    <div class="library-example">from textblob import TextBlob
+                    <div class="library-example"><pre><code class="language-python">
+from textblob import TextBlob
 blob = TextBlob("Bom dia!")
-print(blob.sentiment)</div>
+print(blob.sentiment)</code></pre>
+                    </div>
                     <a href="https://textblob.readthedocs.io/" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
                 <div class="library-card" data-name="requests" data-category="web">
                     <div class="library-name">Requests</div>
                     <div class="library-description">Biblioteca elegante e simples para requisições HTTP. Essencial para consumir APIs e fazer web scraping.</div>
-                    <div class="library-example">import requests
+                    <div class="library-example"><pre><code class="language-python">
+import requests
 response = requests.get('https://api.exemplo.com/dados')
-data = response.json()</div>
+data = response.json()</code></pre>
+                    </div>
                     <a href="https://docs.python-requests.org/" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
                 <div class="library-card" data-name="openai" data-category="web">
                     <div class="library-name">OpenAI</div>
                     <div class="library-description">Cliente oficial para a API da OpenAI, permitindo integração com GPT, DALL-E e outros modelos de IA.</div>
-                    <div class="library-example">import openai
+                    <div class="library-example"><pre><code class="language-python">
+import openai
 response = openai.Completion.create(
     model="gpt-3.5-turbo",
     messages=[{"role": "user", "content": "Olá!"}]
-)</div>
+)</code></pre>
+                    </div>
                     <a href="https://platform.openai.com/docs/" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
                 <div class="library-card" data-name="google-generativeai" data-category="web">
                     <div class="library-name">Google GenerativeAI</div>
                     <div class="library-description">Cliente Python para a API do Google Gemini, permitindo integração com modelos de IA generativa do Google.</div>
-                    <div class="library-example">import google.generativeai as genai
+                    <div class="library-example"><pre><code class="language-python">
+import google.generativeai as genai
 genai.configure(api_key="sua_api_key")
 model = genai.GenerativeModel('gemini-pro')
-response = model.generate_content("Olá!")</div>
+response = model.generate_content("Olá!")</code></pre>
+                    </div>
                     <a href="https://ai.google.dev/docs" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
                 <div class="library-card" data-name="watermark" data-category="web">
                     <div class="library-name">Watermark</div>
                     <div class="library-description">Extensão IPython para mostrar informações do sistema, versões de bibliotecas e metadados dos notebooks.</div>
-                    <div class="library-example">%load_ext watermark
-%watermark -v -m -p pandas,numpy -g</div>
+                    <div class="library-example">
+                        <pre><code class="language-python">
+%load_ext watermark
+%watermark -v -m -p pandas,numpy -g
+                        </code></pre>
+                    </div>
                     <a href="https://github.com/rasbt/watermark" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
             </div>
