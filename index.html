@@ -739,17 +739,21 @@ print(f"Logistic Regression Accuracy: {model_logreg.score(X_test, y_test)}")</co
                 <div class="library-card" data-name="efficient_apriori" data-category="ml">
                     <div class="library-name">Efficient Apriori</div>
                     <div class="library-description">Implementação eficiente do algoritmo Apriori para mineração de regras de associação.</div>
-                    <div class="library-example">from efficient_apriori import apriori
-itemsets, rules = apriori(transactions, min_support=0.1)</div>
+                    <div class="library-example"><pre><code class="language-python">
+from efficient_apriori import apriori
+itemsets, rules = apriori(transactions, min_support=0.1)</code></pre>
+                    </div>
                     <a href="https://github.com/tommyod/Efficient-Apriori" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
                 <div class="library-card" data-name="sqlalchemy" data-category="etl">
                     <div class="library-name">SQLAlchemy</div>
                     <div class="library-description">ORM e toolkit SQL mais popular do Python. Facilita conexões e operações com bancos de dados relacionais.</div>
-                    <div class="library-example">from sqlalchemy import create_engine
+                    <div class="library-example"><pre><code class="language-python">
+from sqlalchemy import create_engine
 engine = create_engine('postgresql://user:pass@localhost/db')
-df.to_sql('tabela', engine)</div>
+df.to_sql('tabela', engine)</code></pre>
+                    </div>
                     <a href="https://docs.sqlalchemy.org/" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
@@ -769,46 +773,56 @@ cur = conn.cursor()
                 <div class="library-card" data-name="pyodbc" data-category="etl">
                     <div class="library-name">PyODBC</div>
                     <div class="library-description">Interface Python para ODBC, permitindo conexão com SQL Server, MySQL, PostgreSQL e outros bancos.</div>
-                    <div class="library-example">import pyodbc
+                    <div class="library-example"><pre><code class="language-python">
+import pyodbc
 conn = pyodbc.connect('DRIVER={SQL Server};SERVER=localhost;DATABASE=test')
-cursor = conn.cursor()</div>
+cursor = conn.cursor()</code></pre>
+                    </div>
                     <a href="https://github.com/mkleehammer/pyodbc/wiki" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
                 <div class="library-card" data-name="openpyxl" data-category="etl">
                     <div class="library-name">OpenPyXL</div>
                     <div class="library-description">Biblioteca para leitura e escrita de arquivos Excel (.xlsx). Suporta formatação avançada e fórmulas.</div>
-                    <div class="library-example">import openpyxl
+                    <div class="library-example"><pre><code class="language-python">
+import openpyxl
 wb = openpyxl.load_workbook('arquivo.xlsx')
-ws = wb.active</div>
+ws = wb.active </code></pre>
+                    </div>
                     <a href="https://openpyxl.readthedocs.io/" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
                 <div class="library-card" data-name="dask" data-category="etl">
                     <div class="library-name">Dask</div>
                     <div class="library-description">Computação paralela para análise de dados que não cabem na memória. Interface similar ao Pandas.</div>
-                    <div class="library-example">import dask.dataframe as dd
+                    <div class="library-example"><pre><code class="language-python">
+import dask.dataframe as dd
 df = dd.read_csv('arquivo_grande.csv')
-resultado = df.groupby('coluna').sum().compute()</div>
+resultado = df.groupby('coluna').sum().compute()</code></pre>
+                    </div>
                     <a href="https://docs.dask.org/" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
                 <div class="library-card" data-name="chardet" data-category="etl">
                     <div class="library-name">Chardet</div>
                     <div class="library-description">Detecção automática de codificação de caracteres em arquivos de texto. Útil para dados internacionais.</div>
-                    <div class="library-example">import chardet
+                    <div class="library-example"><pre><code class="language-python">
+import chardet
 with open('arquivo.txt', 'rb') as f:
-    resultado = chardet.detect(f.read())</div>
+    resultado = chardet.detect(f.read())</code></pre>
+                    </div>
                     <a href="https://github.com/chardet/chardet" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
                 <div class="library-card" data-name="ipython-sql" data-category="etl">
                     <div class="library-name">IPython-SQL</div>
                     <div class="library-description">Extensão mágica para executar queries SQL diretamente em notebooks Jupyter de forma intuitiva.</div>
-                    <div class="library-example">%load_ext sql
+                    <div class="library-example"><pre><code class="language-python">
+%load_ext sql
 %sql postgresql://user:pass@localhost/db
 %%sql
-SELECT * FROM tabela LIMIT 10</div>
+SELECT * FROM tabela LIMIT 10</code></pre>
+                    </div>
                     <a href="https://github.com/catherinedevlin/ipython-sql" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
