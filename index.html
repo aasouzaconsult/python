@@ -315,109 +315,211 @@
             <div class="library-grid">
                 <div class="library-card" data-name="pandas" data-category="manipulacao">
                     <div class="library-name">Pandas</div>
-                    <div class="library-description">Principal biblioteca para manipulação de dados em tabelas (DataFrames). Essencial para limpeza, transformação e análise exploratória de dados.</div>
-                    <div class="library-example">import pandas as pd
+                    <div class="library-description">Principal biblioteca para manipulação de dados em tabelas (DataFrames). Essencial para limpeza, transformação e análise exploratória de dados. Ler arquivos .csv, arquivos excel (.xls) e etc.</div>
+                    <div class="library-example"><pre><code class="language-python">
+# Lendo um arquivo .csv
+import pandas as pd
 df = pd.read_csv('dados.csv')
-print(df.head())</div>
+print(df.head())
+
+# Lendo um arquivo .xlsx (Excel)
+df_excel = pd.read_excel('seuarquivo.xlsx')
+
+# Se o seu arquivo tiver mais de uma aba e você quiser ler uma aba específica,
+# pode usar o parâmetro 'sheet_name'. Pode ser o nome da aba ou o índice (0 para a primeira aba, 1 para a segunda, etc.).
+# df_excel_aba = pd.read_excel('seuarquivo.xlsx', sheet_name='NomeDaMinhaAba')
+# ou
+# df_excel_aba_indice = pd.read_excel('seuarquivo.xlsx', sheet_name=0)
+
+print(df_excel.head())</code></pre>
+                    </div>
                     <a href="https://pandas.pydata.org/docs/" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
                 <div class="library-card" data-name="numpy" data-category="manipulacao">
                     <div class="library-name">NumPy</div>
                     <div class="library-description">Base para computação científica em Python. Oferece arrays multidimensionais e funções matemáticas de alto desempenho.</div>
-                    <div class="library-example">import numpy as np
+                    <div class="library-example"><pre><code class="language-python">
+import numpy as np
 arr = np.array([1, 2, 3, 4, 5])
-print(np.mean(arr))</div>
+print(np.mean(arr))</code></pre>
+                    </div>
                     <a href="https://numpy.org/doc/" class="library-link" target="_blank">📖 Documentação</a>
+                </div>
+
+                <div class="library-card" data-name="pdf-extraction" data-category="etl">
+                    <div class="library-name">PyPDF2 & pdfplumber (Extração de PDF)</div>
+                    <div class="library-description">Ferramentas para extrair texto, metadados e tabelas de documentos PDF. **PyPDF2** é ideal para texto e manipulação de páginas, enquanto **pdfplumber** é excelente para tabelas e texto com posições.</div>
+                    <div class="library-example"><pre><code class="language-python">
+import PyPDF2
+import pdfplumber
+
+# Exemplo com PyPDF2 (texto simples)
+def extract_text_pypdf2(pdf_path):
+    text = ""
+    with open(pdf_path, 'rb') as file:
+        reader = PyPDF2.PdfReader(file)
+        for page in reader.pages:
+            text += page.extract_text()
+    return text
+
+# Exemplo com pdfplumber (texto e tabelas)
+def extract_data_pdfplumber(pdf_path):
+    extracted_text = ""
+    extracted_tables = []
+    with pdfplumber.open(pdf_path) as pdf:
+        for page in pdf.pages:
+            extracted_text += page.extract_text() + "\n"
+            tables = page.extract_tables()
+            if tables:
+                extracted_tables.extend(tables)
+    return extracted_text, extracted_tables
+
+pdf_text_pypdf2 = extract_text_pypdf2('documento.pdf')
+# text, tables = extract_data_pdfplumber('documento_com_tabelas.pdf')
+print("Texto PyPDF2 (trecho):", pdf_text_pypdf2[:200])</code></pre>
+                    </div>
+                    <a href="https://pypdf2.readthedocs.io/en/latest/" class="library-link" target="_blank">📖 Doc PyPDF2</a>
+                    <a href="https://github.com/jsvine/pdfplumber" class="library-link" target="_blank">📖 Doc pdfplumber</a>
+                </div>
+
+                <div class="library-card" data-name="ocr-pytesseract" data-category="etl">
+                    <div class="library-name">PyTesseract (OCR para PDF)</div>
+                    <div class="library-description">Utiliza o motor Tesseract OCR para converter imagens e PDFs escaneados em texto. Essencial para extrair informações de documentos que não possuem texto selecionável.</div>
+                    <div class="library-example"><pre><code class="language-python">
+import pytesseract
+import fitz # PyMuPDF para manipular PDFs
+from PIL import Image
+import io
+
+# ATENÇÃO: Verifique se o Tesseract OCR está instalado no seu sistema!
+# Especifique o caminho se necessário (ex: Windows):
+# pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
+def extract_text_from_scanned_pdf(pdf_path):
+    text = ""
+    pdf_document = fitz.open(pdf_path)
+    for page_num in range(len(pdf_document)):
+        page = pdf_document.load_page(page_num)
+        pix = page.get_pixmap()
+        img = Image.open(io.BytesIO(pix.pil_tobytes(format="png")))
+        text += pytesseract.image_to_string(img, lang='por') # 'por' para português
+    return text
+
+scanned_pdf_content = extract_text_from_scanned_pdf('documento_digitalizado.pdf')
+print("Texto OCR (trecho):", scanned_pdf_content[:200])</code></pre>
+                    </div>
+                    <a href="https://pypi.org/project/pytesseract/" class="library-link" target="_blank">📖 Doc PyTesseract</a>
+                    <a href="https://pymupdf.readthedocs.io/en/latest/" class="library-link" target="_blank">📖 Doc PyMuPDF</a>
                 </div>
 
                 <div class="library-card" data-name="polars" data-category="manipulacao">
                     <div class="library-name">Polars</div>
                     <div class="library-description">Alternativa moderna ao Pandas, extremamente rápida para grandes volumes de dados. Utiliza Rust internamente.</div>
-                    <div class="library-example">import polars as pl
+                    <div class="library-example"><pre><code class="language-python">
+import polars as pl
 df = pl.read_csv('dados.csv')
-print(df.head())</div>
+print(df.head())</code></pre>
+                    </div>
                     <a href="https://pola-rs.github.io/polars-book/" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
                 <div class="library-card" data-name="scipy" data-category="manipulacao">
                     <div class="library-name">SciPy</div>
                     <div class="library-description">Biblioteca científica com algoritmos e funções matemáticas avançadas para otimização, álgebra linear e estatística.</div>
-                    <div class="library-example">from scipy import stats
+                    <div class="library-example"><pre><code class="language-python">
+from scipy import stats
 data = [1, 2, 3, 4, 5]
-print(stats.describe(data))</div>
+print(stats.describe(data))</code></pre>
+                    </div>
                     <a href="https://scipy.org/" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
                 <div class="library-card" data-name="datetime" data-category="manipulacao">
                     <div class="library-name">DateTime</div>
                     <div class="library-description">Biblioteca nativa do Python para manipulação de datas e horários. Essencial para análise temporal.</div>
-                    <div class="library-example">from datetime import datetime
+                    <div class="library-example"><pre><code class="language-python">
+from datetime import datetime
 now = datetime.now()
-print(now.strftime('%Y-%m-%d'))</div>
+print(now.strftime('%Y-%m-%d'))</code></pre>
+                    </div>
                     <a href="https://docs.python.org/3/library/datetime.html" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
                 <div class="library-card" data-name="missingno" data-category="manipulacao">
                     <div class="library-name">Missingno</div>
                     <div class="library-description">Visualização e análise de dados faltantes em datasets. Oferece gráficos intuitivos para entender padrões de dados ausentes.</div>
-                    <div class="library-example">import missingno as msno
+                    <div class="library-example"><pre><code class="language-python">
+import missingno as msno
 msno.matrix(df)
-msno.bar(df)</div>
+msno.bar(df)</code></pre>
+                    </div>
                     <a href="https://github.com/ResidentMario/missingno" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
                 <div class="library-card" data-name="matplotlib" data-category="visualizacao">
                     <div class="library-name">Matplotlib</div>
                     <div class="library-description">Biblioteca fundamental para criação de gráficos estáticos, animados e interativos em Python.</div>
-                    <div class="library-example">import matplotlib.pyplot as plt
+                    <div class="library-example"><pre><code class="language-python">
+import matplotlib.pyplot as plt
 plt.plot([1, 2, 3, 4], [1, 4, 2, 3])
-plt.show()</div>
+plt.show()</code></pre>
+                    </div>
                     <a href="https://matplotlib.org/stable/contents.html" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
                 <div class="library-card" data-name="seaborn" data-category="visualizacao">
                     <div class="library-name">Seaborn</div>
                     <div class="library-description">Interface de alto nível para Matplotlib, especializada em visualizações estatísticas atrativas e informativas.</div>
-                    <div class="library-example">import seaborn as sns
+                    <div class="library-example"><pre><code class="language-python">
+import seaborn as sns
 sns.histplot(data=df, x='idade')
-plt.show()</div>
+plt.show()</code></pre>
+                    </div>
                     <a href="https://seaborn.pydata.org/" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
                 <div class="library-card" data-name="plotly" data-category="visualizacao">
                     <div class="library-name">Plotly</div>
                     <div class="library-description">Criação de gráficos interativos e dashboards. Ideal para visualizações web e apresentações dinâmicas.</div>
-                    <div class="library-example">import plotly.express as px
+                    <div class="library-example"><pre><code class="language-python">
+import plotly.express as px
 fig = px.bar(df, x='ano', y='vendas')
-fig.show()</div>
+fig.show()</code></pre>
+                    </div>
                     <a href="https://plotly.com/python/" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
                 <div class="library-card" data-name="sweetviz" data-category="visualizacao">
                     <div class="library-name">SweetViz</div>
                     <div class="library-description">Gera relatórios de análise exploratória automática com visualizações comparativas entre datasets.</div>
-                    <div class="library-example">import sweetviz as sv
+                    <div class="library-example"><pre><code class="language-python">
+import sweetviz as sv
 report = sv.analyze(df)
-report.show_html()</div>
+report.show_html()</code></pre>
+                    </div>
                     <a href="https://github.com/fbdesignpro/sweetviz" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
                 <div class="library-card" data-name="dtale" data-category="visualizacao">
                     <div class="library-name">D-Tale</div>
                     <div class="library-description">Interface web interativa para visualização e análise de DataFrames do Pandas. Permite exploração visual intuitiva.</div>
-                    <div class="library-example">import dtale
+                    <div class="library-example"><pre><code class="language-python">
+import dtale
 d = dtale.show(df)
-d.open_browser()</div>
+d.open_browser()</code></pre>
+                </div>
                     <a href="https://github.com/man-group/dtale" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
                 <div class="library-card" data-name="scikit-learn" data-category="ml">
                     <div class="library-name">Scikit-learn</div>
                     <div class="library-description">Principal biblioteca para machine learning em Python. Oferece algoritmos de classificação, regressão, clustering e mais.</div>
-                    <div class="library-example">from sklearn.linear_model import LinearRegression
+                    <div class="library-example"><pre><code class="language-python">
+from sklearn.linear_model import LinearRegression
 model = LinearRegression()
-model.fit(X_train, y_train)</div>
+model.fit(X_train, y_train)</code></pre>
+                    </div>
                     <a href="https://scikit-learn.org/stable/" class="library-link" target="_blank">📖 Documentação</a>
                 </div>
 
